@@ -1,0 +1,6 @@
+@type=folder
+folder {{reponame}}
+folder {{reponame}}/bin
+folder {{reponame}}/data
+folder {{reponame}}/src
+file {{reponame}}/.gitignore

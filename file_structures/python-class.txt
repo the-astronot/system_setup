@@ -1,0 +1,17 @@
+@type=file
+"""
+@author: {{username}}
+@desc:
+@started: {{date}}
+"""
+import 
+
+
+class {{classname}}:
+	def __init__(self):
+		pass
+
+
+# Testing
+if __name__ == '__main__':
+	class_test = {{classname}}()
