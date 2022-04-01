@@ -1,0 +1,4 @@
+@type=comment
+"All of my software is created with the intent of being a net gain for humanity,
+or at worst, neutral. You are free to use it as you see fit, but please don't be
+evil."

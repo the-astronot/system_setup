@@ -1,0 +1,11 @@
+@type=file
+"""
+@author: {{@author}}
+@desc:
+@created: {{@date}}
+"""
+#import
+
+
+if __name__ == '__main__':
+	pass

@@ -1,17 +1,17 @@
 @type=file
 """
-@author: {{username}}
+@author: {{@author}}
 @desc:
-@started: {{date}}
+@created: {{@date}}
 """
-import 
+#import 
 
 
-class {{classname}}:
+class {{@fname}}:
 	def __init__(self):
 		pass
 
 
 # Testing
 if __name__ == '__main__':
-	class_test = {{classname}}()
+	class_test = {{@fname}}()
