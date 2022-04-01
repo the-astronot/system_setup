@@ -3,6 +3,8 @@
 @author: {{@author}}
 @desc:
 @created: {{@date}}
+{{@license}}
+{{@no_evil}}
 """
 #import 
 

@@ -74,12 +74,13 @@ def determine_filetype(args):
 def config_filler(fname):
 	with open(config_file,"r") as conf:
 		config_text = conf.read()
-		config_text = config_text.strip("\n")
-		config_array = config_text.split("\n")
+		config_text = config_text.strip(";\n")
+		config_array = config_text.split(";\n")
 		configs = {}
 		for item in config_array:
 			parts = item.split(":")
-			configs[parts[0]] = parts[1]
+			if len(parts) == 2:
+				configs[parts[0]] = parts[1]
 	configs["@fname"] = fname
 	for key in all_configs.keys():
 		if configs.get(key) is None or configs.get(key) == "":
