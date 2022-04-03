@@ -1,3 +1,0 @@
-@type=folder
-file "" cpp main cpp {{@fname}}.cpp
-file "" cpp main h {{@fname}}.h

@@ -17,8 +17,8 @@ def create(args):
 	file_data.read()
 	if file_data.desc == "file":
 		create_file(file_data,current_path,configs)
-	elif file_data.desc == "folder":
-		create_folder(file_data,current_path,configs)
+	elif file_data.desc == "spawner":
+		create_spawner(file_data,current_path,configs)
 
 
 def create_file(file_data, path, configs):
@@ -27,7 +27,9 @@ def create_file(file_data, path, configs):
 		file.write(file_data.body)
 
 
-def create_folder(file_data, path, configs):
+def create_spawner(file_data, path, configs):
+	# Walk through text, creating folders wiht preface "folder"
+	# And files with the preface "file"
 	file_data.insert_wildcards(configs)
 	commands = file_data.body.split("\n")
 	for command in commands:
@@ -36,34 +38,39 @@ def create_folder(file_data, path, configs):
 				os.mkdir(os.path.join(path,command[7:]))
 			except FileExistsError:
 				pass
-		else:
+		elif command[:4] == "file":
 			args = command[5:].split(" ")
-			if args[0] != "\"\"":
-				args[-1] = os.path.join(args[0],args[-1])
-			args = args[1:]
+			print(args)
+			print(args[-1])
 			ftype, fname = determine_filetype(args)
+			print(fname)
 			sub_file_data = File(ftype,fname)
 			sub_file_data.read()
-			sub_configs = config_filler(fname.split("/")[-1])
-			create_file(sub_file_data, path, sub_configs)
+			sub_configs = config_filler(fname)
+			if sub_file_data.desc == "file":
+				create_file(sub_file_data, path, sub_configs)
+			elif sub_file_data.desc == "spawner":
+				create_spawner(sub_file_data, path, sub_configs)
 
 
 def determine_filetype(args):
+	# A lot of checks to determine what boilerplate (blr) file is being requested
 	fname = args[-1]
 	filesource = filetype_path
-	for x in range(len(args)-1):
+	for x in range(max(len(args)-1,1)):
 		test_filesource = os.path.join(filesource,args[x])
 		if os.path.exists(test_filesource):
 			filesource = test_filesource
 		else:
-			filesource = os.path.join(filesource,"{}.txt".format(args[x]))
+			filesource = os.path.join(filesource,"{}.{}".format(args[x],ext))
 			break
-	if os.path.isdir(filesource) and os.path.exists(os.path.join(filesource,"any.txt")):
-		filesource = os.path.join(filesource,"any.txt")
-	elif os.path.exists(os.path.join(filesource,"{}.txt".format(args[-1]))):
-		filesource = os.path.join(filesource,"{}.txt".format(args[-1]))
-	elif os.path.isdir(filesource) and os.path.exists(filesource+".txt"):
-		filesource = filesource+".txt"
+	if os.path.isdir(filesource) and os.path.exists(os.path.join(filesource,"any.{}".format(ext))):
+		filesource = os.path.join(filesource,"any.{}".format(ext))
+	elif os.path.exists(os.path.join(filesource,"{0}.{1}".format(args[-1],ext))):
+		filesource = os.path.join(filesource,"{}.{}".format(args[-1],ext))
+		fname = "."
+	elif os.path.isdir(filesource) and os.path.exists(filesource+"."+ext):
+		filesource = filesource+".{}".format(ext)
 	elif os.path.isdir(os.path.join(filesource,args[-1])):
 		print("Not Specific Enough, Try Again")
 		exit(1)
@@ -72,6 +79,7 @@ def determine_filetype(args):
 
 
 def config_filler(fname):
+	# Fills in the blr file variables with those configured
 	with open(config_file,"r") as conf:
 		config_text = conf.read()
 		config_text = config_text.strip(";\n")
@@ -95,13 +103,15 @@ def generate_defaults():
 	all_configs["@date"] = "{0:02d}/{1:02d}/{2}".format(curr_time.month,curr_time.day,curr_time.year)
 
 
-
+# Globals
+# They get used all over the place, but never changed
 config_file = "creator.conf"
 filetype_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),"file_structures")
 current_path = os.getcwd()
 #print(current_path)
 config_file = os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),"config"),config_file)
 all_configs = {}
+ext = "blr"
 
 
 

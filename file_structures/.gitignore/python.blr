@@ -1,0 +1,5 @@
+@type=file
+# Python .gitignore
+
+# pycache
+__pycache__
