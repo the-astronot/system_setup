@@ -106,6 +106,7 @@ def generate_defaults():
 	all_configs["@date"] = "{0:02d}/{1:02d}/{2}".format(curr_time.month,curr_time.day,curr_time.year)
 
 
+
 # Globals
 # They get used all over the place, but never changed
 config_file = "creator.conf"

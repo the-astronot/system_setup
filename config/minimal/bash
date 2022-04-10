@@ -1,0 +1,2 @@
+# THE KEY
+bind -x:'"\C-g": "xdg-open https://www.stackoverflow.com"';
