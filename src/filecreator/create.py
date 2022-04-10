@@ -99,7 +99,10 @@ def config_filler(fname):
 def generate_defaults():
 	global all_configs
 	curr_time = datetime.datetime.now()
-	all_configs["@author"] = os.getlogin()
+	try:
+		all_configs["@author"] = os.getlogin()
+	except FileNotFoundError:
+		all_configs["@author"] = input("Enter User: ")
 	all_configs["@date"] = "{0:02d}/{1:02d}/{2}".format(curr_time.month,curr_time.day,curr_time.year)
 
 
@@ -108,7 +111,6 @@ def generate_defaults():
 config_file = "creator.conf"
 filetype_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),"file_structures")
 current_path = os.getcwd()
-#print(current_path)
 config_file = os.path.join(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),"config"),config_file)
 all_configs = {}
 ext = "blr"
