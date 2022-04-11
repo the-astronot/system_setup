@@ -35,7 +35,7 @@ def file_edits(command,dest,line_layout):
 		with open(command,"r") as f:
 			dest = join(expanduser("~"),dest)
 			text = f.read()
-			text = text.strip("\n")
+			text = text.strip(";\n")
 			lines = text.split(";\n")
 			try:
 				with open(dest,"r") as r:
@@ -62,7 +62,8 @@ def file_edits(command,dest,line_layout):
 						split = line.find(":")
 						data.append(line[:split])
 						data.append(line[split+1:])
-						to_write = line_layout.replace("{0}",data[0]).replace("{1}",data[1][:-1])
+						print(data)
+						to_write = line_layout.replace("{0}",data[0]).replace("{1}",data[1])
 						w.write(to_write)
 					except IndexError:
 						pass

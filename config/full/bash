@@ -1,0 +1,5 @@
+# THE KEY
+bind -x:'"\C-g": "xdg-open https://www.stackoverflow.com"';
+
+# theFUCK
+eval:$(thefuck --alias --enable-experimental-instant-mode)

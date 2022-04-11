@@ -1,0 +1,9 @@
+nmap
+python3
+python3-pip
+build-essential
+openssh
+wget
+curl
+git
+vlc
