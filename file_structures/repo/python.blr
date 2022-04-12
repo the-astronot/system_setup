@@ -4,3 +4,5 @@ folder {{@fname}}/bin
 folder {{@fname}}/data
 folder {{@fname}}/src
 file .gitignore python {{@fname}}/.gitignore
+file python main {{@fname}}/src/main.py
+file README {{@fname}}/README.md
