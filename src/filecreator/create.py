@@ -54,7 +54,7 @@ def create_spawner(file_data, path, configs):
 
 
 def determine_filetype(args):
-	# A lot of checks to determine what boilerplate (blr) file is being requested
+	# A lot of checks to determine what boilerplate struct file is being requested
 	fname = args[-1]
 	filesource = filetype_path
 	for x in range(max(len(args)-1,1)):
@@ -79,6 +79,14 @@ def determine_filetype(args):
 
 
 def config_filler(fname):
+	try:
+		fname = fname.split("/")[-1]
+	except:
+		pass
+	try:
+		fname = fname.split(".")[0]
+	except:
+		pass
 	# Fills in the blr file variables with those configured
 	with open(config_file,"r") as conf:
 		config_text = conf.read()
