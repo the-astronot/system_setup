@@ -9,7 +9,7 @@ import sys
 import distro
 
 
-def run_setup(command):
+def run_setup(command, args = None):
 	folder = join(config_path,command)
 	if not exists(folder):
 		print("Setup not found.\nPossible Setups Include:")
@@ -17,20 +17,32 @@ def run_setup(command):
 			if isdir(join(config_path,line)):
 				print("- {}".format(line))
 	else:
-		# Installs
-		installs(command)
-		# Pip installs
-		pip_installs(command)
-		# Bash aliases
-		file_edits(join(folder,"alias"),".bash_aliases","alias {0}=\"{1}\"\n")
-		# Bashrc
-		file_edits(join(folder,"bash"),".bashrc","{0} {1}\n")
-		# Macros
-		file_edits(join(folder,"macro"),".inputrc","{0}: \"{1}\"\n")
+		if args is None:
+			# Installs
+			installs(command)
+			# Pip installs
+			pip_installs(command)
+			# Bash aliases
+			file_edits(join(folder,"alias"),".bash_aliases")
+			# Bashrc
+			file_edits(join(folder,"bash"),".bashrc")
+			# Macros
+			file_edits(join(folder,"macro"),".inputrc")
+		else:
+			if args.count("install") != 0:
+				installs(command)
+			if args.count("pip") != 0:
+				pip_installs(command)
+			if args.count("alias") != 0:
+				file_edits(join(folder,"alias"),".bash_aliases")
+			if args.count("bashrc") != 0:
+				file_edits(join(folder,"bash"),".bashrc")
+			if args.count("macro") != 0:
+				file_edits(join(folder,"macro"),".inputrc")
 		print("SETUP COMPLETED")
 
 
-def file_edits(command,dest,line_layout):
+def file_edits(command,dest):
 	try:
 		with open(command,"r") as f:
 			dest = join(expanduser("~"),dest)
@@ -53,20 +65,7 @@ def file_edits(command,dest,line_layout):
 				w.write(text)
 				w.write("\n## THIS SECTION GOVERNED BY SYSTEM_SETUP ##\n\n")
 				for line in lines:
-					try:
-						if line[0] == "#":
-							comment_end = line.find("\n")+1
-							w.write("{}".format(line[:comment_end]))
-							line = line[comment_end:]
-						data = []
-						split = line.find(":")
-						data.append(line[:split])
-						data.append(line[split+1:])
-						print(data)
-						to_write = line_layout.replace("{0}",data[0]).replace("{1}",data[1])
-						w.write(to_write)
-					except IndexError:
-						pass
+					w.write(line)
 				w.write("\n## END OF SYSTEM_SETUP ##\n")
 				vprint("Wrote to {}".format(dest))
 	except FileNotFoundError:
@@ -117,5 +116,11 @@ verbose_logging = True
 
 
 if __name__ == '__main__':
-	assert(len(sys.argv)==2)
-	run_setup(sys.argv[1])
+	assert(len(sys.argv)>=2)
+	if (len(sys.argv)==2):
+		run_setup(sys.argv[1])
+	else:
+		args = []
+		for x in range(2,len(sys.argv)):
+			args.append(sys.argv[x])
+		run_setup(sys.argv[1],args=args)

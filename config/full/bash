@@ -1,5 +1,16 @@
 # THE KEY
-bind -x:'"\C-g": "xdg-open https://www.stackoverflow.com"';
+bind -x '"^S": "xdg-open https://www.stackoverflow.com"'
+
+# Changing the bash prompt
+PS1="\[\033[37m\]┌[\t|\[\033[1;37m\]${debian_chroot:+($debian_chroot)}\[\033[1;35m\]\u@\h\[\033[37m\]:\[\033[0m\]\[\033[1m\]\w\[\033[37m\]]\n└─[\$ \[\033[0m\]"
 
 # theFUCK
-eval:$(thefuck --alias --enable-experimental-instant-mode)
+eval $(thefuck --alias --enable-experimental-instant-mode)
+
+# Banner
+cat <<EOF
+
+IP_ADDR: $(hostname -I | grep -o [0-9]*\\.[0-9]*\\.[0-9]*\\.[0-9]* | head -1)
+UPTIME: $(uptime -p)
+
+EOF

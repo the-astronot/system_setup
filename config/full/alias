@@ -1,3 +1,3 @@
-scan:nmap -sn 192.168.1.0/24;
-new:create;
-jobs:ps aux;
+alias scan="nmap -sn 192.168.1.0/24"
+alias new="create"
+alias jobs="ps aux"
