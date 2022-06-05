@@ -5,4 +5,4 @@ pillow
 discord
 python-dotenv
 python-vlc
-mpi4py
+praw
