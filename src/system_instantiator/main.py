@@ -79,7 +79,9 @@ def installs(command):
 	if dist == "ubuntu" or dist == "debian" or dist == "raspbian":
 		installer = "sudo apt-get install"
 	elif dist == "arch":
-		installer == "sudo pacman -Su"
+		installer = "sudo pacman -Su"
+	elif dist == "darwin":
+		installer = "brew install"
 	if installer == "":
 		print("UNKNOWN DISTRIBUTION: ABORTING INSTALLATION")
 		return
