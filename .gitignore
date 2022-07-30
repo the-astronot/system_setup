@@ -1,6 +1,9 @@
 # My config
 */creator.conf
 
+# VSC
+.vscode
+
 # Python
 __pycache__
 
