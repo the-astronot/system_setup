@@ -1,6 +1,0 @@
-@type=folder
-folder {{@fname}}
-folder {{@fname}}/bin
-folder {{@fname}}/data
-folder {{@fname}}/src
-file {{@fname}} .gitignore .gitignore

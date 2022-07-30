@@ -1,3 +1,0 @@
-@type=spawner
-file cpp class cpp {{@fname}}.cpp
-file cpp class h {{@fname}}.h

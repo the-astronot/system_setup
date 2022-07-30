@@ -1,0 +1,10 @@
+# GITIGNORE
+
+# VSC
+.vscode
+
+# CORE
+core.*
+
+# Hidden Files
+.*
