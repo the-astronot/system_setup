@@ -17,23 +17,29 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 ________________
 |_File_History_|________________________________________________________________
 |_Programmer______|_Date_______|_Comments_______________________________________
-| Max Marshall    | 2022-07-29 | Created File
-| Max Marshall    | 2022-07-30 | Updated to use new files
+| Max Marshall    | 2022-07-30 | Created File, separated from filestructure
+|
 |
 |
 """
-from factory import FileStructureFactory
-from utils import variables, load_variables
-from sys import argv
+from filestructure import File
 
+class GitIgnore(File):
+	"""
+	args: [type]
+	"""
+	body_types = {
+		"python": "gitignore_python_body",
+		"cpp": "gitignore_cpp_body"
+	}
 
-def ProcessArgs(args):
-	load_variables()
-	f_structs = FileStructureFactory(args,variables)
-	f_structs.setup()
-	f_structs.createFile()
+	def __init__(self,args,variables):
+		super().__init__(args,variables)
 
-if __name__ == '__main__':
-	args = argv
-	args.pop(0)
-	ProcessArgs(args)
+	def setup(self):
+		self.name = ".gitignore"
+		self.header_type = "gitignore"
+		self.header_file = "gitignore_header"
+		self.body_type = "gitignore"
+		self.body_file = self.body_types[self.args[0]]
+		super().distr_setup()

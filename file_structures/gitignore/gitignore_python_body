@@ -1,3 +1,4 @@
 # PYTHON
 __pycache__
 *.whl
+.venv

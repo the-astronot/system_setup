@@ -17,23 +17,29 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 ________________
 |_File_History_|________________________________________________________________
 |_Programmer______|_Date_______|_Comments_______________________________________
-| Max Marshall    | 2022-07-29 | Created File
-| Max Marshall    | 2022-07-30 | Updated to use new files
+| Max Marshall    | 2022-07-30 | Created File, separated from file_structure
+|
 |
 |
 """
-from factory import FileStructureFactory
-from utils import variables, load_variables
-from sys import argv
+from filestructure import File
 
+class Makefile(File):
+	"""
+	args: [type, title]
+	"""
+	def __init__(self, args, variables):
+		super().__init__(args,variables)
+		self.body_files = {
+			"cpp": "makefile_cpp_body"
+		}
 
-def ProcessArgs(args):
-	load_variables()
-	f_structs = FileStructureFactory(args,variables)
-	f_structs.setup()
-	f_structs.createFile()
-
-if __name__ == '__main__':
-	args = argv
-	args.pop(0)
-	ProcessArgs(args)
+	def setup(self):
+		self.ext = ""
+		self.name = "Makefile"
+		self.body_type = "makefile"
+		self.header_file = ""
+		self.body_file = self.body_files[self.args[0]]
+		if len(self.args)>1:
+			self.variables["@name"] = self.args[1]
+		super().distr_setup()

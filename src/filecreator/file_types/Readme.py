@@ -17,23 +17,30 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 ________________
 |_File_History_|________________________________________________________________
 |_Programmer______|_Date_______|_Comments_______________________________________
-| Max Marshall    | 2022-07-29 | Created File
-| Max Marshall    | 2022-07-30 | Updated to use new files
+| Max Marshall    | 2022-07-30 | Created File, separated from file_structure
+|
 |
 |
 """
-from factory import FileStructureFactory
-from utils import variables, load_variables
-from sys import argv
+from filestructure import File
 
+class ReadMe(File):
+	"""
+	args: [title]
+	"""
+	def __init__(self, args, variables):
+		super().__init__(args,variables)
+		self.bodies = {
+			"cpp": "readme_cpp_body",
+			"python": "readme_python_body"
+		}
 
-def ProcessArgs(args):
-	load_variables()
-	f_structs = FileStructureFactory(args,variables)
-	f_structs.setup()
-	f_structs.createFile()
-
-if __name__ == '__main__':
-	args = argv
-	args.pop(0)
-	ProcessArgs(args)
+	def setup(self):
+		self.name = "README"
+		self.ext = ".md"
+		if len(self.args) != 0:
+			self.variables["@name"] = self.args[0]
+		self.header_type = "readme"
+		self.body_type = "readme"
+		self.header_file = "readme_header"
+		super().distr_setup()

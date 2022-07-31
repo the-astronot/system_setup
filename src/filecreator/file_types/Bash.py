@@ -17,23 +17,24 @@ along with this program.  If not, see https://www.gnu.org/licenses/.
 ________________
 |_File_History_|________________________________________________________________
 |_Programmer______|_Date_______|_Comments_______________________________________
-| Max Marshall    | 2022-07-29 | Created File
-| Max Marshall    | 2022-07-30 | Updated to use new files
+| Max Marshall    | 2022-07-30 | Created File
+|
 |
 |
 """
-from factory import FileStructureFactory
-from utils import variables, load_variables
-from sys import argv
+from filestructure import File
 
+class Bash(File):
+	"""
+	args: [name]
+	"""
+	def __init__(self, args, variables):
+		super().__init__(args, variables)
 
-def ProcessArgs(args):
-	load_variables()
-	f_structs = FileStructureFactory(args,variables)
-	f_structs.setup()
-	f_structs.createFile()
-
-if __name__ == '__main__':
-	args = argv
-	args.pop(0)
-	ProcessArgs(args)
+	def setup(self):
+		self.name = self.args[0]
+		self.header_file = ""
+		self.body_type = "bash"
+		self.body_file = "bash_body"
+		self.ext = ".sh"
+		super().distr_setup()

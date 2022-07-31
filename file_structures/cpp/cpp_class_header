@@ -1,5 +1,19 @@
 #ifndef __@name_h__
 #define __@name_h__
 
+class @name() {
+	private:
+
+	public:
+
+	@name();
+	
+	~@name();
+
+	// GETTERS
+
+	// SETTERS
+};
+
 
 #endif
