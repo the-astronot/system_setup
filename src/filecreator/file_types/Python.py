@@ -18,7 +18,7 @@ ________________
 |_File_History_|________________________________________________________________
 |_Programmer______|_Date_______|_Comments_______________________________________
 | Max Marshall    | 2022-07-30 | Created File, separated from filestructure
-|
+| Max Marshall    | 2022-11-24 | Modified subclasses
 |
 |
 """
@@ -32,6 +32,8 @@ class Python(File):
 		self.variables["@mlc_end"] = "\"\"\""
 		self.ext = ".py"
 		self.body_type = "python"
+		self.header_type = ["python","default"]
+		self.header_file = ["python_header","default_header"]
 		self.subclasses = {
 			"class": Python_Class_File,
 			"main": Python_Funct_File,
@@ -39,6 +41,7 @@ class Python(File):
 			"funct": Python_Funct_File,
 			"function": Python_Funct_File
 		}
+		self.isFile = False
 
 	def setup(self):
 		self.type = "main"
@@ -47,13 +50,18 @@ class Python(File):
 			self.type = self.args[0]
 		if len(self.args)>1:
 			self.name = self.args[1]
-		self.children.append(self.subclasses[self.type]([self.name],self.variables))
+		if self.type in self.subclasses:
+			python_file = self.subclasses[self.type]([self.name],self.variables)
+		python_file.isFile = True
+		python_file.path = self.path
+		self.children.append(python_file)
 		super().distr_setup()
 
 class Python_Class_File(Python):
 	def __init__(self,args,variables):
 		super().__init__(args,variables)
 		self.body_file = "python_class_body"
+		self.isFile = True
 
 	def setup(self):
 		assert len(self.args)==1,"Python Class Name Required"
@@ -65,6 +73,7 @@ class Python_Funct_File(Python):
 	def __init__(self,args,variables):
 		super().__init__(args,variables)
 		self.body_file = "python_funct_body"
+		self.isFile = True
 
 	def setup(self):
 		assert len(self.args)==1,"Python Class Name Required"

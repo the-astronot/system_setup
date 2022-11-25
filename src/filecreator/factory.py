@@ -18,8 +18,8 @@ ________________
 |_File_History_|________________________________________________________________
 |_Programmer______|_Date_______|_Comments_______________________________________
 | Max Marshall    | 2022-07-30 | Created File, separated from filestructure
-|
-|
+| Max Marshall    | 2022-11-23 | Added License
+| Max Marshall    | 2022-11-24 | Added Settings
 |
 """
 from utils import *
@@ -32,6 +32,8 @@ from file_types.Readme import *
 from file_types.Gitignore import *
 from file_types.Bash import *
 from file_types.Copy import *
+from file_types.License import *
+from file_types.Settings import *
 
 
 def FileStructureFactory(args,variables):
@@ -44,18 +46,10 @@ def FileStructureFactory(args,variables):
 		"readme": ReadMe,
 		"makefile": Makefile,
 		"bash": Bash,
-		"copy": Copy
+		"copy": Copy,
+		"license": License,
+		"file": File,
+		"settings": Settings
 	}
 	return f_structs[f_struct_name](args, variables)
-
-
-def RepoFactory(args, variables):
-	"""
-	It's expected that the first arg is a "type" in repos
-	"""
-	repos = {
-		"cpp": Repo_Cpp,
-		"python": Repo_Python
-	}
-	return repos[args[0]](args,variables)
 

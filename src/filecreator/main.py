@@ -23,12 +23,13 @@ ________________
 |
 """
 from factory import FileStructureFactory
-from utils import variables, load_variables
+from utils import load_variables, apply_changes
 from sys import argv
 
 
 def ProcessArgs(args):
-	load_variables()
+	args, variables = apply_changes(args)
+	variables = load_variables(variables)
 	f_structs = FileStructureFactory(args,variables)
 	f_structs.setup()
 	f_structs.createFile()

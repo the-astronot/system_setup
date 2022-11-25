@@ -18,22 +18,27 @@ ________________
 |_File_History_|________________________________________________________________
 |_Programmer______|_Date_______|_Comments_______________________________________
 | Max Marshall    | 2022-07-30 | Created File, separated from filestructure
-|
+| Max Marshall    | 2022-11-23 | Added License, fixed recursive repo
 |
 |
 """
 import factory
 from filestructure import FileStructure
-from file_types.Python import Python_Funct_File
+from file_types.Python import *
 from file_types.Makefile import *
 from file_types.Cpp import *
 from file_types.Gitignore import *
-from utils import *
+from file_types.License import *
+from file_types.Settings import *
 
 
 class Repo(FileStructure): # Generic
 	def __init__(self, args, variables):
 		super().__init__(args,variables)
+		self.repos = {
+			"cpp": Repo_Cpp,
+			"python": Repo_Python
+		}
 
 	def setup(self):
 		self.type = self.args[0]
@@ -43,9 +48,12 @@ class Repo(FileStructure): # Generic
 		supMakeDirs(path.join(path.join(self.path,self.name),"bin"))
 		supMakeDirs(path.join(path.join(self.path,self.name),"data"))
 		supMakeDirs(path.join(path.join(self.path,self.name),"src"))
-		self.children.append(factory.RepoFactory(self.args,variables))
-		self.children.append(factory.FileStructureFactory(["readme",self.name],variables))
+		if self.type in self.repos:
+			self.children.append(self.repos[self.type](self.args,self.variables))
+		self.children.append(factory.FileStructureFactory(["readme",self.name],self.variables))
 		self.children.append(GitIgnore(self.args,self.variables))
+		self.children.append(License(self.args,self.variables))
+		self.children.append(Settings(self.args,self.variables))
 		for child in self.children:
 			child.path = path.join(self.path,self.name)
 		super().distr_setup()
@@ -54,13 +62,27 @@ class Repo(FileStructure): # Generic
 class Repo_Python(Repo): # Python
 	def __init__(self,args,variables):
 		super().__init__(args,variables)
+		self.name = self.args[1]
+		self.path = path.join(self.path,self.args[1])
+		
 	
 	def setup(self):
+		self.name = self.args[1]
+		self.isFile = False
 		self.children.append(factory.FileStructureFactory([".gitignore","python"],self.variables))
 		self.children[0].path = self.path
-		python_child = Python_Funct_File(["main"],self.variables)
+		setup = factory.FileStructureFactory(["bash","setup"], self.variables)
+		setup.path = self.path
+		self.children.append(setup)
+		run = factory.FileStructureFactory(["bash","python",self.name], self.variables)
+		run.path = path.join(self.path,"bin")
+		self.children.append(run)
+		python_child = factory.FileStructureFactory(["python","main"],self.variables)
 		python_child.path = path.join(self.path,"src")
 		self.children.append(python_child)
+		req = factory.FileStructureFactory(["file","requirements.txt"], self.variables)
+		req.path = self.path
+		self.children.append(req)
 		super().distr_setup()
 
 
@@ -69,6 +91,7 @@ class Repo_Cpp(Repo): # Cpp
 		super().__init__(args,variables)
 	
 	def setup(self):
+		self.name = self.args[1]
 		self.children.append(Cpp([],self.variables))
 		self.children.append(Makefile(self.args,self.variables))
 		for child in self.children:
