@@ -3,8 +3,11 @@
 # VSC
 .vscode
 
-# CORE
+# CORE DUMPS
 core.*
 
 # Hidden Files
 .*
+
+# LOG FILES
+*.log

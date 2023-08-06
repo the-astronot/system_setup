@@ -1,0 +1,16 @@
+#include "$FILENAME.h"
+
+$FILENAME::$FILENAME() {
+
+}
+
+$FILENAME::~$FILENAME() {
+
+}
+
+
+// GETTERS
+
+
+// SETTERS
+

@@ -41,7 +41,7 @@ class Bash(File):
 		self.subclasses = {
 			"setup": Setup,
 			"base": Base,
-			"python": PythonRun
+			"run": PythonRun
 		}
 
 	def setup(self):
@@ -85,7 +85,7 @@ class Setup(Bash):
 class PythonRun(Bash):
 	def __init__(self, args, variables):
 		super().__init__(args,variables)
-		self.name = self.args[0]
+		self.name = "run"
 		self.body_type = ["bash"]
 		self.body_file = ["python_body"]
 

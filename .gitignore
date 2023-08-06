@@ -7,8 +7,9 @@
 # Python
 __pycache__
 
-# Dicking around
-burn
+# Tests
+src/filecreator/test_files/*
+!.exists
 
-#.fcsettings
-.fcsettings
+# Scratch
+scratch/

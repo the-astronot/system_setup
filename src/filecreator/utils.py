@@ -20,6 +20,7 @@ ________________
 | Max Marshall    | 2022-07-30 | Created File, separated from filestructure
 | Max Marshall    | 2022-11-23 | Added load_license(), apply_changes(), etc()
 | Max Marshall    | 2022-11-25 | Added settings checker
+| Max Marshall    | 2023-06-01 | Added support for comments in fc files
 |
 """
 import os
@@ -70,7 +71,7 @@ def load_variables(variables):
 	settings_file = find_settings(variables)
 	creator_file = path.join(path.dirname(path.dirname(path.dirname(path.abspath(__file__)))),path.join("config","creator.conf"))
 	if settings_file is not None:
-		print(settings_file)
+		#print(settings_file)
 		variables = sub_load_variables(variables,settings_file)
 	variables = sub_load_variables(variables,creator_file)
 	date = datetime.now()
@@ -86,6 +87,10 @@ def sub_load_variables(variables,file):
 	if path.exists(file):
 		with open(file, "r") as f:
 			text = f.read()
+			while (text.find("#") > -1):
+				first = text.find("#")
+				last = text.find("\n",first)
+				text = text[:first] + text[last+1:]
 			var_data = text.strip(";\n").strip("\n").split(";\n")
 			for var in var_data:
 				split_loc = var.find(":")

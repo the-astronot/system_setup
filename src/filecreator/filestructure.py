@@ -20,6 +20,7 @@ ________________
 | Max Marshall    | 2022-07-29 | Created File
 | Max Marshall    | 2022-07-30 | Moved SubClasses into other files
 | Max Marshall    | 2022-11-23 | Modified to allow multiple body/headers
+| Max Marshall    | 2023-06-01 | Modified multi-line comment code, minor edits
 |
 """
 from os import path, getcwd
@@ -42,6 +43,7 @@ class FileStructure:
 		self.body_file = ""
 		self.header_type = "default"
 		self.body_type = "default"
+		self.replace = True
 
 	def distr_setup(self):
 		for child in self.children:
@@ -85,8 +87,8 @@ class FileStructure:
 					start_idx = text.find("@mlc_start")
 					end_idx = text.find("@mlc_end")+8
 					repl_text = text[start_idx:end_idx]
-					repl_text = repl_text.replace("@mlc_start\n","#").replace("@mlc_end","\n")
-					repl_text = repl_text.replace("\n","\n#")
+					repl_text = repl_text.replace("@mlc_start\n","# ").replace("@mlc_end","\n")
+					repl_text = repl_text.replace("\n","\n# ")
 					repl_text = repl_text.replace("#\n","")
 					text = text[:start_idx] + repl_text[:-1] + text[end_idx:]
 			else:

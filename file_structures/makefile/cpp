@@ -1,0 +1,21 @@
+MAIN=$FILENAME
+CXX=g++
+CXX_FLAGS=
+SRC_DIR=src
+SRCS=$(wildcard $(SRC_DIR)/*.cpp)
+INCLUDES=-I./includes
+OBJS=$(SRCS:.cpp=.o)
+DEBUG=-g -Wall
+
+all: $(MAIN)
+
+$(MAIN): $(OBJS)
+	$(CXX) $(CXX_FLAGS) $(INCLUDES) -o $(MAIN) $(OBJS)
+
+debug: $(MAIN) $(DEBUG)
+
+.cpp.o:
+	$(CXX) $(CXX_FLAGS) $(INCLUDES) -c -o $@ $<
+
+clean:
+	$(RM) $(MAIN) $(SRC_DIR)/*.o *~
