@@ -54,7 +54,7 @@ function initialize {
 function arg_parser() {
 	for i in "$@"; do
 		case $i in 
-			py**)
+			python)
 				export PYTHONFILE=1
 				;;
 			cpp)
@@ -210,9 +210,9 @@ function file_creator {
 			return
 		elif [[ $LICENSEFILE ]]; then # Make this better...
 			FILENAME=${FILENAME%.*} # Remove extension
-			if [[ "$FILENAME" == "gplv3" ]]; then
-				file_writer "LICENSE" "${DIRS[license]}/$FILENAME/license"
-			elif [[ "$FILENAME" == "mit" ]]; then
+			if [[ "$FILENAME" == "none" ]]; then
+				echo "" > /dev/null
+			else
 				file_writer "LICENSE" "${DIRS[license]}/$FILENAME/license"
 			fi
 			return
@@ -233,8 +233,9 @@ function source_config {
 	# While true, back up dirs until find config file or reaches root
 	CURR_DIR="$(pwd)"
 	while [[ "$(pwd)" != "/" ]]; do
-		echo "$(pwd)"
+		#echo "$(pwd)"
 		if [[ -e "$(pwd)/.fcsettings" ]]; then
+			#echo "FOUND $(pwd)/.fcsettings"
 			source "$(pwd)/.fcsettings"
 			if [[ "$LICENSENAME" ]]; then
 				export LICENSENAME=$LICENSENAME
